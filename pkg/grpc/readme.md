@@ -15,9 +15,32 @@
 
 #### 第四步：编辑protobuf文件
 
-#### 编译
+文件名：order_service.proto
+```
+syntax = "proto3";
+//生成的.pb.go文件的package
+option go_package = ".;proto";
+//导入一个空类型
+import "google/protobuf/empty.proto";
+package proto;
+//定义一个消息传递体
+message OrderRequest {
+  int64 orderId = 1;
+  string orderName = 2;
+}
+//定义一个消息传递体
+message OrderResponse {
+  int64 code = 1;
+  string data = 2;
+}
+//定义一个接口
+service OrderAction {
+  rpc update(OrderRequest) returns (google.protobuf.Empty){}
+  rpc query(OrderRequest) returns (OrderResponse) {}
+}
+```
 
-protoc --go_out=plugins=grpc:. ./order_service.proto
+* 编译该文件 protoc --go_out=plugins=grpc:. ./order_service.proto
 
 #### 编写server代码
 
@@ -54,7 +77,6 @@ func main() {
 }
 
 ```
-
 
 #### 编写client代码
 ```golang
