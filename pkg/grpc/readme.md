@@ -1,19 +1,19 @@
 ## go-grpc demo
 
-#### 第一步：搭建go项目，初始化go-mod，配置ide(一般用goland)，全部略略略
+#### 一、搭建go项目，初始化go-mod，配置ide(一般用goland)，全部略略略
 
-#### 第二步：安装protobuf
+#### 二、安装protobuf
 1. brew install protobuf,这一步我安装的时候遇到一个问题，然后执行"sudo chown -R 我的登陆名 /usr/local/share/man/man8"后好了。
 2. protoc --version  输出libprotoc 3.13.0代表安装成功。
 
-#### 第三步：安装proto和protoc-gen-go
+#### 三、安装proto和protoc-gen-go
 
 注意go get后可能需要重启ide
 
 * go get -u -v github.com/golang/protobuf/proto
 * go get -u -v github.com/golang/protobuf/protoc-gen-go
 
-#### 第四步：编辑protobuf文件
+#### 四、：编辑protobuf文件
 
 文件名：order_service.proto
 ```
@@ -42,7 +42,7 @@ service OrderAction {
 
 * 编译该文件 protoc --go_out=plugins=grpc:. ./order_service.proto
 
-#### 编写server代码
+#### 五、编写server代码
 
 ```golang
 package main
@@ -78,7 +78,7 @@ func main() {
 
 ```
 
-#### 编写client代码
+#### 六、编写client代码
 ```golang
 package main
 
