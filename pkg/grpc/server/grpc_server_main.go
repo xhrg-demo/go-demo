@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"go-demo/pkg/grpc/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"net"
 )
 
@@ -29,5 +30,15 @@ func main() {
 	s := grpc.NewServer()
 	//注册helloServer为客户端提供服务,注意这里的OrderAction{}，等价new(OrderAction),等价&OrderAction{}
 	proto.RegisterOrderActionServer(s, OrderAction{})
+	/*
+			这一个方法reflection.Register会启动grpc反射服务，如果不需要刻意不开启，比如线上环境。
+			grpcurl -plaintext localhost:1535 list就可以看到服务列表了
+		>安装grpcurl
+		>go get github.com/fullstorydev/grpcurl
+		>go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+	*/
+	reflection.Register(s)
+
 	s.Serve(listen)
+
 }
