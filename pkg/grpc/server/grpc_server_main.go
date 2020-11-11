@@ -6,6 +6,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"go-demo/pkg/grpc/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/reflection"
 	"net"
 )
@@ -16,6 +17,13 @@ func (h OrderAction) Query(context context.Context, request *proto.OrderRequest)
 	response := &proto.OrderResponse{}
 	response.Code = 200
 	response.Data = fmt.Sprintf("%s:%d", request.OrderName, request.OrderId)
+	fmt.Printf("我是grpc_server,我收到了请求，数据是%v\n", response.Data)
+
+	md, ok := metadata.FromIncomingContext(context)
+	if ok {
+		fmt.Printf("获取header%v\n", md)
+	}
+
 	return response, nil
 }
 func (h OrderAction) Update(context context.Context, request *proto.OrderRequest) (*empty.Empty, error) {

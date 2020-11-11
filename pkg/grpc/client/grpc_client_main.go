@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go-demo/pkg/grpc/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -20,9 +21,17 @@ func main() {
 	request := new(proto.OrderRequest)
 	request.OrderId = 100
 	request.OrderName = "订单名称"
-	response, err := c.Query(context.Background(), request)
+
+	//grpc的header
+	md := metadata.Pairs(
+		"header1", "headerValue1",
+	)
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+
+	response, err := c.Query( /*context.Background()换成带header的ctx*/ ctx, request)
+
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(response.Data)
+	fmt.Printf("我是grpc_client，我收到了数据是：%v", response.Data)
 }
