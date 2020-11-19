@@ -4,7 +4,9 @@ import (
 	"fmt"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
+	"io"
 	"log"
+	"os"
 	"time"
 )
 
@@ -23,7 +25,7 @@ func InitLog() {
 	logrus.SetLevel(level)
 	logrus.SetReportCaller(true)
 	path := "/Users/xhrg/temp/logs/main.log"
- 	logf, err := rotatelogs.New(
+	logfile, err := rotatelogs.New(
 		path+".%Y%m%d",
 		rotatelogs.WithLinkName(path),
 		rotatelogs.WithClock(rotatelogs.Local),
@@ -34,5 +36,6 @@ func InitLog() {
 	if err != nil {
 		log.Fatal("error:", err.Error())
 	}
-	logrus.SetOutput(logf)
+	//输出到日志文件的同事打印控制台
+	logrus.SetOutput(io.MultiWriter(logfile, os.Stdout))
 }
