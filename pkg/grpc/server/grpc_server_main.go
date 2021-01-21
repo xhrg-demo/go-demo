@@ -18,7 +18,6 @@ func (h OrderAction) Query(context context.Context, request *proto.OrderRequest)
 	response.Code = 200
 	response.Data = fmt.Sprintf("%s:%d", request.OrderName, request.OrderId)
 	fmt.Printf("我是grpc_server,我收到了请求，数据是%v\n", response.Data)
-
 	md, ok := metadata.FromIncomingContext(context)
 	if ok {
 		fmt.Printf("获取header%v\n", md)
@@ -47,6 +46,9 @@ func main() {
 	*/
 	reflection.Register(s)
 
-	s.Serve(listen)
-
+	err = s.Serve(listen)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("ok")
 }
