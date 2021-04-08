@@ -1,4 +1,4 @@
-module go-demo
+module github.com/xhrg-demo/go-demo
 
 go 1.15
 
